@@ -1,4 +1,4 @@
-export const Quotes = [
+export const Quotes: {quote: string; name: string}[] = [
   {
     quote:
       "Start by doing what's necessary; then do what's possible; and suddenly you are doing the impossible.",
