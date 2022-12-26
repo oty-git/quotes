@@ -7,41 +7,37 @@ interface ListOfQuotesProps {
 }
 
 const ListOfQuotes = ({sortByValue}: ListOfQuotesProps) => {
-  const [quotes, setQuotes] = useState(Quotes);
+  const initialListOfQuotes = Quotes;
+  const [quotesList, setQuotesList] = useState(initialListOfQuotes);
 
   useEffect(() => {
-    if (sortByValue === 'sortByName') {
-      const sortedByNameQuotes = [
-        ...quotes.sort((a, b) =>
+    if (sortByValue && sortByValue === 'sortByName') {
+      setQuotesList((prev) => {
+        return [...prev].sort((a, b) =>
           a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-        ),
-      ];
-      setQuotes(sortedByNameQuotes);
+        );
+      });
     }
 
-    if (sortByValue === 'sortByQuote') {
-      const sortedByQuoteQuotes = [
-        ...quotes.sort((a, b) =>
+    if (sortByValue && sortByValue === 'sortByQuote') {
+      setQuotesList((prev) => {
+        return [...prev].sort((a, b) =>
           a.quote > b.quote ? 1 : b.quote > a.quote ? -1 : 0
-        ),
-      ];
-      setQuotes(sortedByQuoteQuotes);
+        );
+      });
     }
 
-    // if (sortByValue === 'resetSort') {
-    //   const initialQutesList = [...Quotes];
-
-    //   console.log('sortByValue', sortByValue);
-    //   setQuotes([...Quotes]);
-    // }
-  }, [quotes, sortByValue]);
+    if (sortByValue && sortByValue === 'resetSort') {
+      setQuotesList([...initialListOfQuotes]);
+    }
+  }, [initialListOfQuotes, sortByValue]);
 
   return (
     <>
       <List>
-        {quotes &&
-          quotes.map((quote) => (
-            <ListItemButton>
+        {quotesList &&
+          quotesList.map((quote) => (
+            <ListItemButton key={quote.id}>
               <ListItemText primary={quote.quote} secondary={quote.name} />
             </ListItemButton>
           ))}
