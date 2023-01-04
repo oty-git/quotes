@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {Container} from '@mui/material';
-import ListOfQuotes from '../../components/list-of-quotes';
-import SortButtons from '../../components/sort-buttons';
+import QuotesList from '../../components/QuotesList';
+import SortButtons from '../../components/SortButtons';
 
-interface HomePageProps {}
+interface IHomePageProps {}
 
-const HomePage = (props: HomePageProps) => {
+const HomePage = (props: IHomePageProps) => {
   const [sortByValue, setSortByValue] = useState('');
   console.log('sortByValue', sortByValue);
 
@@ -13,7 +13,7 @@ const HomePage = (props: HomePageProps) => {
     <>
       <Container maxWidth="md">
         <SortButtons setSortByValue={setSortByValue} />
-        <ListOfQuotes sortByValue={sortByValue} />
+        <QuotesList sortByValue={sortByValue} />
       </Container>
     </>
   );

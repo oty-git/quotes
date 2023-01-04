@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {ToggleButton, ToggleButtonGroup, Box} from '@mui/material';
+import {sortByNameText, sortByQuoteText, resetSortText} from './config/en.js';
 
-interface SortButtonsProps {
+interface ISortButtonsProps {
   setSortByValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const SortButtons = ({setSortByValue}: SortButtonsProps) => {
+const SortButtons = ({setSortByValue}: ISortButtonsProps) => {
   const [alignment, setAlignment] = useState('');
 
   const handleChange = (
@@ -35,9 +36,9 @@ const SortButtons = ({setSortByValue}: SortButtonsProps) => {
         onChange={handleChange}
         aria-label="Platform"
       >
-        <ToggleButton value="sortByName">Sort by name</ToggleButton>
-        <ToggleButton value="sortByQuote">Sort by quote</ToggleButton>
-        <ToggleButton value="resetSort">Reset</ToggleButton>
+        <ToggleButton value="sortByName">{sortByNameText}</ToggleButton>
+        <ToggleButton value="sortByQuote">{sortByQuoteText}</ToggleButton>
+        <ToggleButton value="resetSort">{resetSortText}</ToggleButton>
       </ToggleButtonGroup>
     </Box>
   );

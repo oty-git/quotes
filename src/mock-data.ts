@@ -1,4 +1,10 @@
-export const Quotes: {quote: string; name: string; id: string}[] = [
+interface IQuotes {
+  quote: string;
+  name: string;
+  id: string;
+}
+
+export const Quotes: IQuotes[] = [
   {
     quote:
       "Start by doing what's necessary; then do what's possible; and suddenly you are doing the impossible.",
