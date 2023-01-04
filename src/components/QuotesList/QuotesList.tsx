@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {List, ListItemButton, ListItemText} from '@mui/material';
-import {Quotes} from '../../mock-data';
+import {getPosts} from '../../api/getPosts';
 
 interface IQuotesListProps {
   sortByValue: string;
@@ -12,22 +12,33 @@ interface ISortParams {
 }
 
 interface IQuotes {
-  quote: string;
-  name: string;
+  body: string;
+  title: string;
   id: string;
 }
+// eslint-disable-next-line react-hooks/exhaustive-deps
+const sortParams: ISortParams = {
+  resetSort: '',
+  sortByName: 'name',
+  sortByQuote: 'quote',
+};
 
 const QuotesList = ({sortByValue}: IQuotesListProps) => {
-  const initialQuotesList = Quotes;
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const sortParams: ISortParams = {
-    resetSort: '',
-    sortByName: 'name',
-    sortByQuote: 'quote',
-  };
+  // const initialQuotesList = Quotes;
+  const [initialQuotesList, setInitialQuotesList] = useState<IQuotes[]>([]);
 
   const [quotesList, setQuotesList] = useState<IQuotes[]>(initialQuotesList);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getPosts();
+      setInitialQuotesList(data);
+      setQuotesList(data);
+    };
+    getData();
+  }, []);
+
+  console.log('initialQuotesList', initialQuotesList);
 
   // const sort = useCallback(
   //   (sortByValue: string) => {
@@ -52,7 +63,7 @@ const QuotesList = ({sortByValue}: IQuotesListProps) => {
     if (sortByValue && sortByValue === 'sortByName') {
       setQuotesList((prev) => {
         return [...prev].sort((a, b) =>
-          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+          a.body > b.title ? 1 : b.title > a.title ? -1 : 0
         );
       });
       return;
@@ -61,7 +72,7 @@ const QuotesList = ({sortByValue}: IQuotesListProps) => {
     if (sortByValue && sortByValue === 'sortByQuote') {
       setQuotesList((prev) => {
         return [...prev].sort((a, b) =>
-          a.quote > b.quote ? 1 : b.quote > a.quote ? -1 : 0
+          a.body > b.body ? 1 : b.body > a.body ? -1 : 0
         );
       });
       return;
@@ -71,7 +82,7 @@ const QuotesList = ({sortByValue}: IQuotesListProps) => {
       setQuotesList([...initialQuotesList]);
       return;
     }
-  }, [initialQuotesList, sortByValue, sortParams]);
+  }, [initialQuotesList, sortByValue]);
 
   return (
     <>
@@ -79,7 +90,7 @@ const QuotesList = ({sortByValue}: IQuotesListProps) => {
         {quotesList &&
           quotesList.map((quote) => (
             <ListItemButton key={quote.id}>
-              <ListItemText primary={quote.quote} secondary={quote.name} />
+              <ListItemText primary={quote.body} secondary={quote.title} />
             </ListItemButton>
           ))}
       </List>
