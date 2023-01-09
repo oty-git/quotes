@@ -1,33 +1,26 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {List, ListItemButton, ListItemText} from '@mui/material';
 import {getPosts} from '../../api/getPosts';
+import {IQuotes} from '../../types';
+import {useNavigate} from 'react-router-dom';
 
 interface IQuotesListProps {
   sortByValue: string;
 }
-interface ISortParams {
-  resetSort: string;
-  sortByName: string;
-  sortByQuote: string;
-}
 
-interface IQuotes {
-  body: string;
-  title: string;
-  id: string;
-}
 // eslint-disable-next-line react-hooks/exhaustive-deps
-const sortParams: ISortParams = {
-  resetSort: '',
-  sortByName: 'name',
-  sortByQuote: 'quote',
-};
+// const sortParams: ISortParams = {
+//   resetSort: '',
+//   sortByName: 'name',
+//   sortByQuote: 'quote',
+// };
 
-const QuotesList = ({sortByValue}: IQuotesListProps) => {
+const QuotesList: FC<IQuotesListProps> = ({sortByValue}) => {
   // const initialQuotesList = Quotes;
   const [initialQuotesList, setInitialQuotesList] = useState<IQuotes[]>([]);
 
   const [quotesList, setQuotesList] = useState<IQuotes[]>(initialQuotesList);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -89,7 +82,10 @@ const QuotesList = ({sortByValue}: IQuotesListProps) => {
       <List>
         {quotesList &&
           quotesList.map((quote) => (
-            <ListItemButton key={quote.id}>
+            <ListItemButton
+              key={quote.id}
+              onClick={() => navigate(`/comments/${quote.id}`)}
+            >
               <ListItemText primary={quote.body} secondary={quote.title} />
             </ListItemButton>
           ))}
